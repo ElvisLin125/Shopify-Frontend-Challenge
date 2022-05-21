@@ -1,4 +1,6 @@
-var completions;
+import API_KEY from "./apikey.js";
+window.completions;
+
 
 //Load all the saved completions from local storage and populate them on the page
 window.onload = function populate() {
@@ -7,7 +9,7 @@ window.onload = function populate() {
     console.log(JSON.parse(data));
 
 
-    completions = JSON.parse(data);
+    window.completions = JSON.parse(data);
     if (completions == null) {
         completions = [];
     }
@@ -43,7 +45,7 @@ function prependCompletion(completion) {
     row.appendChild(responseHead);
     row.appendChild(response);
     completionTable.appendChild(row);
-    
+
     responseDiv.prepend(completionTable)
 
     // let completionDiv = document.createElement("div");
@@ -92,7 +94,7 @@ function getResponse(prompt) {
         headers: {
             "Content-Type": "application/json",
             // Authorization: `Bearer ${process.env.OPENAI_SECRET}`,
-            Authorization: `Bearer ${"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"}`,
+            Authorization: `Bearer ${"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"}`,
         },
         body: JSON.stringify(data),
     })
@@ -108,3 +110,5 @@ function clearResponses() {
     document.getElementById("responses").innerHTML = "";
     completions = [];
 }
+
+window.processPrompt = processPrompt;
