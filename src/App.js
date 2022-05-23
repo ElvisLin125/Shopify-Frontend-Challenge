@@ -18,7 +18,6 @@ function App() {
       setCompletions([]);
     }
     
-    console.log(completions);
   }, []);
 
   const processPrompt = async event => {
