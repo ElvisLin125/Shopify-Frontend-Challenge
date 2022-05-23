@@ -10,7 +10,7 @@ function App() {
   useEffect(() => {
     let stored = window.localStorage.getItem("completions");
     console.log(stored);
-    if (stored != null) {
+    if (JSON.parse(stored) != null) {
       setCompletions(JSON.parse(stored));
     } else {
       setCompletions([]);
