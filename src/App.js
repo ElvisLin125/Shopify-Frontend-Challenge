@@ -1,5 +1,5 @@
 import "./App.css";
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 
 
 
@@ -8,17 +8,23 @@ function App() {
   // const [completions, setCompletions] = useState([]);
   const [prompt, setPrompt] = useState("");
   const [completions, setCompletions] = useState([]);
+  const isFirstRender = useRef(true);
 
   useEffect(() => {
-    let stored = window.localStorage.getItem("completions");
-    console.log(stored);
-    if (JSON.parse(stored) != null) {
-      setCompletions(JSON.parse(stored));
-    } else {
-      setCompletions([]);
+    let stored = JSON.parse(window.localStorage.getItem("completions"));
+    if (stored) {
+      setCompletions(stored);
     }
-    
   }, []);
+
+  useEffect( () => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+    window.localStorage.setItem("completions", JSON.stringify(completions));
+
+  }, [completions]);
 
   const processPrompt = async event => {
     event.preventDefault();
@@ -32,7 +38,6 @@ function App() {
     // let currCompletions = completions;
     // currCompletions.push(completion);
     setCompletions([completion, ...completions]);
-    window.localStorage.setItem("completions", JSON.stringify(completions));
   }
 
   //API call to OpenAI 
@@ -57,7 +62,9 @@ function App() {
       .then(response => response.json())
       .then((data) => {
         console.log(data);
-        return data.choices[0].text
+        // let currCompletions = completions;
+        // currCompletions.push(completion);
+        return data.choices[0].text;
       })
   }
 
